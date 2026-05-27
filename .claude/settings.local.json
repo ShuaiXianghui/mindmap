@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.mind-elixir.com)",
+      "Bash(echo \"---exists:$?---\")",
+      "Bash(python3 *)",
+      "Bash(open *)",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/mind-elixir@5.11.2/dist/MindElixir.iife.js\")",
+      "Bash(grep -oP '[a-zA-Z_$]+\\\\.\\(nodeData|getData|getNode|toData|data\\)\\\\b')",
+      "Bash(grep -oP '.{0,50}expandNode.{0,100}')",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/mind-elixir@5.11.2/dist/MindElixir.css\")",
+      "Bash(chmod +x *)",
+      "Bash(./mindmap ganggan.json)",
+      "Bash(curl -s http://localhost:8765/auto-load.json)",
+      "Bash(kill %1)",
+      "Bash(./mindmap *)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  }
+}

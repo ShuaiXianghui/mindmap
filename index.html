@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>思维导图</title>
+<title>Mind Map</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mind-elixir@5.11.2/dist/MindElixir.css">
 <style>
 :root {
@@ -402,34 +402,182 @@ body {
 /* File input hidden */
 #import-input { display: none; }
 </style>
+
+<script>
+// ── Internationalization ──
+const I18N = {
+  zh: {
+    title: '思维导图',
+    save: '保存',
+    saveTitle: '保存 (Ctrl+S)',
+    exportPng: '导出图片',
+    exportPngTitle: '导出为图片',
+    exportJson: '导出JSON',
+    exportJsonTitle: '导出为 JSON 文件',
+    import: '导入',
+    importTitle: '从 JSON 文件导入',
+    themeTitle: '切换主题',
+    shortcuts: '快捷键',
+    mapList: '导图列表',
+    newMap: '新建导图',
+    rename: '双击重命名',
+    delete: '删除',
+    addChild: '添加子节点',
+    addSibling: '添加兄弟节点',
+    editNode: '编辑节点',
+    deleteNode: '删除节点',
+    undo: '撤销',
+    redo: '重做',
+    saveK: '保存',
+    zoom: '缩放',
+    zoomDetail: '滚轮 / 双指捏合',
+    pan: '平移画布',
+    panDetail: '拖拽空白区域',
+    loadError: '⚠️ Mind Elixir 库加载失败，请检查网络连接后刷新页面。',
+    saved: '已保存 ✓',
+    untitledMap: '未命名导图',
+    mapCreated: '已创建新导图',
+    keepOne: '至少保留一张导图',
+    mapDeleted: '已删除导图',
+    jsonExported: '已导出 JSON',
+    noContainer: '无法导出：未找到导图容器',
+    pngExported: '已导出图片',
+    pngFail: '导出图片失败: ',
+    untitled: '未命名',
+    fileReadFail: '文件读取失败',
+    unrecognizedData: '无法识别的数据格式',
+    unrecognizedFile: '无法识别的文件格式',
+    missingRoot: '数据格式错误：缺少根节点',
+    importedMap: '已导入导图',
+    importFail: '导入失败: ',
+    unknownError: '未知错误',
+    defaultMap: '我的思维导图',
+    centralTopic: '中心主题',
+    autoImported: '已从 auto-load.json 导入',
+    importedFromArray: '导入的导图',
+  },
+  en: {
+    title: 'Mind Map',
+    save: 'Save',
+    saveTitle: 'Save (Ctrl+S)',
+    exportPng: 'Export PNG',
+    exportPngTitle: 'Export as image',
+    exportJson: 'Export JSON',
+    exportJsonTitle: 'Export as JSON file',
+    import: 'Import',
+    importTitle: 'Import from JSON file',
+    themeTitle: 'Toggle theme',
+    shortcuts: 'Shortcuts',
+    mapList: 'Map List',
+    newMap: 'New map',
+    rename: 'Double-click to rename',
+    delete: 'Delete',
+    addChild: 'Add child',
+    addSibling: 'Add sibling',
+    editNode: 'Edit node',
+    deleteNode: 'Delete node',
+    undo: 'Undo',
+    redo: 'Redo',
+    saveK: 'Save',
+    zoom: 'Zoom',
+    zoomDetail: 'Scroll / Pinch',
+    pan: 'Pan',
+    panDetail: 'Drag empty area',
+    loadError: '⚠️ Mind Elixir library failed to load. Check your network and refresh.',
+    saved: 'Saved ✓',
+    untitledMap: 'Untitled map',
+    mapCreated: 'Map created',
+    keepOne: 'Keep at least one map',
+    mapDeleted: 'Map deleted',
+    jsonExported: 'JSON exported',
+    noContainer: 'Export failed: container not found',
+    pngExported: 'PNG exported',
+    pngFail: 'PNG export failed: ',
+    untitled: 'Untitled',
+    fileReadFail: 'Failed to read file',
+    unrecognizedData: 'Unrecognized data format',
+    unrecognizedFile: 'Unrecognized file format',
+    missingRoot: 'Data format error: missing root node',
+    importedMap: 'Map imported',
+    importFail: 'Import failed: ',
+    unknownError: 'Unknown error',
+    defaultMap: 'My Mind Map',
+    centralTopic: 'Central Topic',
+    autoImported: 'Imported from auto-load.json',
+    importedFromArray: 'Imported map',
+  },
+};
+
+let LANG = (function() {
+  // Restore saved language or detect from browser
+  var saved = (function() {
+    try { var s = JSON.parse(localStorage.getItem('mindmap_app')); return s && s.lang; } catch(e) { return null; }
+  })();
+  if (saved) return saved;
+  var navLang = (navigator.language || '').toLowerCase();
+  return navLang.startsWith('zh') ? 'zh' : 'en';
+})();
+
+function t(key) {
+  return (I18N[LANG] && I18N[LANG][key]) || (I18N.en[key]) || key;
+}
+
+function setLang(lang) {
+  LANG = lang;
+  try {
+    var s = JSON.parse(localStorage.getItem('mindmap_app') || '{}');
+    s.lang = lang;
+    localStorage.setItem('mindmap_app', JSON.stringify(s));
+  } catch(e) {}
+  // Refresh to apply
+  location.reload();
+}
+
+function applyI18n() {
+  document.title = t('title');
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (key) el.textContent = t(key);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-title');
+    if (key) el.title = t(key);
+  });
+}
+</script>
+
 </head>
 <body>
 
 <!-- Toolbar -->
 <div class="toolbar">
-  <span class="logo">🧠 思维导图</span>
+  <span class="logo">🧠 <span data-i18n="title">Mind Map</span></span>
   <div class="sep"></div>
-  <button onclick="App.saveCurrentMap()" title="保存 (Ctrl+S)">
+  <button onclick="App.saveCurrentMap()" data-i18n-title="saveTitle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-    保存
+    <span data-i18n="save">Save</span>
   </button>
-  <button onclick="App.exportPNG()" title="导出为图片">
+  <button onclick="App.exportPNG()" data-i18n-title="exportPngTitle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-    导出图片
+    <span data-i18n="exportPng">Export PNG</span>
   </button>
-  <button onclick="App.exportJSON()" title="导出为 JSON 文件">
+  <button onclick="App.exportJSON()" data-i18n-title="exportJsonTitle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    导出JSON
+    <span data-i18n="exportJson">Export JSON</span>
   </button>
-  <button onclick="document.getElementById('import-input').click()" title="从 JSON 文件导入">
+  <button onclick="document.getElementById('import-input').click()" data-i18n-title="importTitle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-    导入
+    <span data-i18n="import">Import</span>
   </button>
   <div class="sep"></div>
-  <button onclick="App.toggleTheme()" id="theme-btn" title="切换主题">
+  <button onclick="App.toggleTheme()" id="theme-btn" data-i18n-title="themeTitle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
   </button>
-  <button onclick="App.toggleShortcuts()" title="快捷键">
+  
+        <button onclick="setLang(LANG==='zh'?'en':'zh')" title="English/中文" style="font-size:13px;width:auto;padding:0 8px;">
+          <span data-i18n="lang">EN</span>
+        </button>
+        <button onclick="App.toggleShortcuts()" data-i18n-title="shortcuts">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
   </button>
 </div>
@@ -438,8 +586,8 @@ body {
 <div class="main">
   <aside class="sidebar">
     <div class="sidebar-header">
-      <span>导图列表</span>
-      <button onclick="App.createMap()" title="新建导图">+</button>
+      <span data-i18n="mapList">Map List</span>
+      <button onclick="App.createMap()" data-i18n-title="newMap">+</button>
     </div>
     <div class="map-list" id="map-list"></div>
   </aside>
@@ -450,16 +598,16 @@ body {
 
 <!-- Shortcuts Panel -->
 <div class="shortcuts-panel hidden" id="shortcuts-panel">
-  <h3>⌨️ 快捷键</h3>
-  <div class="shortcut-row"><span>添加子节点</span><span class="shortcut-key">Tab</span></div>
-  <div class="shortcut-row"><span>添加兄弟节点</span><span class="shortcut-key">Enter</span></div>
-  <div class="shortcut-row"><span>编辑节点</span><span class="shortcut-key">Space</span></div>
-  <div class="shortcut-row"><span>删除节点</span><span class="shortcut-key">Delete / Backspace</span></div>
-  <div class="shortcut-row"><span>撤销</span><span class="shortcut-key">Ctrl+Z</span></div>
-  <div class="shortcut-row"><span>重做</span><span class="shortcut-key">Ctrl+Y</span></div>
-  <div class="shortcut-row"><span>保存</span><span class="shortcut-key">Ctrl+S</span></div>
-  <div class="shortcut-row"><span>缩放</span><span class="shortcut-key">滚轮 / 双指捏合</span></div>
-  <div class="shortcut-row"><span>平移画布</span><span class="shortcut-key">拖拽空白区域</span></div>
+  <h3>⌨️ <span data-i18n="shortcuts">Shortcuts</span></h3>
+  <div class="shortcut-row"><span data-i18n="addChild">Add child</span><span class="shortcut-key">Tab</span></div>
+  <div class="shortcut-row"><span data-i18n="addSibling">Add sibling</span><span class="shortcut-key">Enter</span></div>
+  <div class="shortcut-row"><span data-i18n="editNode">Edit node</span><span class="shortcut-key">Space</span></div>
+  <div class="shortcut-row"><span data-i18n="deleteNode">Delete node</span><span class="shortcut-key">Delete / Backspace</span></div>
+  <div class="shortcut-row"><span data-i18n="undo">Undo</span><span class="shortcut-key">Ctrl+Z</span></div>
+  <div class="shortcut-row"><span data-i18n="redo">Redo</span><span class="shortcut-key">Ctrl+Y</span></div>
+  <div class="shortcut-row"><span data-i18n="saveK">Save</span><span class="shortcut-key">Ctrl+S</span></div>
+  <div class="shortcut-row"><span data-i18n="zoom">Zoom</span><span class="shortcut-key" data-i18n="zoomDetail">Scroll / Pinch</span></div>
+  <div class="shortcut-row"><span data-i18n="pan">Pan</span><span class="shortcut-key" data-i18n="panDetail">Drag empty area</span></div>
 </div>
 
 <!-- Import input -->
@@ -544,7 +692,7 @@ const App = (() => {
       data = data.nodeData;
     }
     // Ensure data is wrapped: { nodeData: {...} }
-    const wrapped = (data && data.nodeData) ? data : meNew('中心主题');
+    const wrapped = (data && data.nodeData) ? data : meNew(t('centralTopic'));
     if (!mei) {
       initMindElixir(wrapped);
     } else {
@@ -574,7 +722,7 @@ const App = (() => {
     clearTimeout(saveTimer);
     const data = wrapData(mei.getData());
     if (data) { saveMapData(state.currentMapId, data); updateMapTimestamp(state.currentMapId); }
-    toast('已保存 ✓');
+    toast(t('saved'));
   }
 
   function updateMapTimestamp(id) {
@@ -588,7 +736,7 @@ const App = (() => {
 
   // ===== Map management =====
   function createMap(name) {
-    const mapName = name || '未命名导图';
+    const mapName = name || t('untitledMap');
     const id = 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
     const nd = meNew(mapName); // Already { nodeData: {...} } format
     saveMapData(id, nd);
@@ -596,7 +744,7 @@ const App = (() => {
     saveState();
     switchMap(id);
     renderMapList();
-    toast('已创建新导图');
+    toast(t('mapCreated'));
   }
 
   function switchMap(id) {
@@ -614,7 +762,7 @@ const App = (() => {
 
   function deleteMap(id) {
     if (state.maps.length <= 1) {
-      toast('至少保留一张导图');
+      toast(t('keepOne'));
       return;
     }
     deleteMapData(id);
@@ -627,7 +775,7 @@ const App = (() => {
     if (state.currentMapId) {
       loadMindMap(state.currentMapId);
     }
-    toast('已删除导图');
+    toast(t('mapDeleted'));
   }
 
   function renameMap(id, newName) {
@@ -676,7 +824,7 @@ const App = (() => {
     if (!data) return;
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     downloadBlob(blob, 'mindmap.json');
-    toast('已导出 JSON');
+    toast(t('jsonExported'));
   }
 
   async function exportPNG() {
@@ -684,7 +832,7 @@ const App = (() => {
     try {
       const el = document.querySelector('#map');
       if (!el) {
-        toast('无法导出：未找到导图容器');
+        toast(t('noContainer'));
         return;
       }
       const canvas = await html2canvas(el, {
@@ -694,10 +842,10 @@ const App = (() => {
       });
       canvas.toBlob(blob => {
         downloadBlob(blob, 'mindmap.png');
-        toast('已导出图片');
+        toast(t('pngExported'));
       });
     } catch (e) {
-      toast('导出图片失败: ' + e.message);
+      toast(t('pngFail') + e.message);
     }
   }
 
@@ -707,7 +855,7 @@ const App = (() => {
     if (Array.isArray(node)) return null;
     const c = idCounter || { v: 0 };
     const n = {
-      topic: (node.topic || node.name || node.title || node.text || '未命名').toString(),
+      topic: (node.topic || node.name || node.title || node.text || t('untitled')).toString(),
       id: node.id || ('n_' + Date.now() + '_' + (c.v++)),
       expanded: node.expanded !== false,
     };
@@ -758,7 +906,7 @@ const App = (() => {
     nodeData = tryExtract(raw);
 
     if (!nodeData && Array.isArray(raw)) {
-      nodeData = { topic: '\u5bfc\u5165\u7684\u5bfc\u56fe', id: 'nr_' + Date.now(), expanded: true, children: [] };
+      nodeData = { topic: t('importedFromArray'), id: 'nr_' + Date.now(), expanded: true, children: [] };
       for (var i = 0; i < raw.length; i++) {
         var kid = normalizeNode(raw[i], idCounter);
         if (kid) nodeData.children.push(kid);
@@ -767,7 +915,7 @@ const App = (() => {
     }
 
     if (!nodeData || !nodeData.topic) {
-      throw new Error(source === 'auto' ? '\u65e0\u6cd5\u8bc6\u522b\u7684\u6570\u636e\u683c\u5f0f' : '\u65e0\u6cd5\u8bc6\u522b\u7684\u6587\u4ef6\u683c\u5f0f');
+      throw new Error(source === 'auto' ? t('unrecognizedData') : t('unrecognizedFile'));
     }
     console.log('[import] Normalized OK, topic=', nodeData.topic);
 
@@ -800,7 +948,7 @@ const App = (() => {
         if (!raw) return;
         console.log('[auto-import] Loaded auto-load.json');
         parseAndImport(raw, 'auto');
-        toast('\u5df2\u4ece auto-load.json \u5bfc\u5165');
+        toast(t('autoImported'));
       })
       .catch(function(e) {
         console.log('[auto-import]', e.message);
@@ -811,15 +959,15 @@ const App = (() => {
     var file = event.target.files[0];
     if (!file) return;
     var reader = new FileReader();
-    reader.onerror = function() { toast('\u6587\u4ef6\u8bfb\u53d6\u5931\u8d25'); };
+    reader.onerror = function() { toast(t('fileReadFail')); };
     reader.onload = function() {
       try {
         var raw = JSON.parse(reader.result);
         parseAndImport(raw, 'file');
-        toast('\u5df2\u5bfc\u5165\u5bfc\u56fe');
+        toast(t('importedMap'));
       } catch (e) {
         console.error('[import] ERROR:', e.message, e.stack);
-        toast('\u5bfc\u5165\u5931\u8d25: ' + (e.message || '\u672a\u77e5\u9519\u8bef'));
+        toast(t('importFail') + (e.message || t('unknownError')));
       }
     };
     reader.readAsText(file);
@@ -858,8 +1006,8 @@ const App = (() => {
     list.innerHTML = state.maps.map(m => `
       <div class="map-item${m.id === state.currentMapId ? ' active' : ''}" data-id="${m.id}" onclick="App.switchMap('${m.id}')">
         <span class="map-icon">📄</span>
-        <span class="map-name" ondblclick="event.stopPropagation(); App.startRename('${m.id}')" title="双击重命名">${escapeHtml(m.name)}</span>
-        <button class="map-delete" onclick="event.stopPropagation(); App.deleteMap('${m.id}')" title="删除">×</button>
+        <span class="map-name" ondblclick="event.stopPropagation(); App.startRename('${m.id}')" data-i18n-title="rename">${escapeHtml(m.name)}</span>
+        <button class="map-delete" onclick="event.stopPropagation(); App.deleteMap('${m.id}')" data-i18n-title="delete">×</button>
       </div>
     `).join('');
   }
@@ -891,11 +1039,12 @@ const App = (() => {
   function init() {
     loadState();
     applyTheme();
+    applyI18n();
     renderMapList();
 
     if (state.maps.length === 0) {
       // First time: create a default map
-      createMap('我的思维导图');
+      createMap(t('defaultMap'));
     } else {
       const currentId = state.currentMapId || state.maps[0].id;
       switchMap(currentId);
@@ -947,7 +1096,7 @@ const App = (() => {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof MindElixir === 'undefined') {
-    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#86868b;"><p>⚠️ Mind Elixir 库加载失败，请检查网络连接后刷新页面。</p></div>';
+    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#86868b;"><p>' + t('loadError') + '</p></div>';
     return;
   }
   App.init();
