@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# mindmap — one command to open a mind map from any JSON file.
+# Usage: mindmap <file.json>
+#        mindmap              (open without auto-load)
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Start server in background
+if [ $# -gt 0 ]; then
+    python3 "$SCRIPT_DIR/server.py" "$1" &
+else
+    python3 "$SCRIPT_DIR/server.py" &
+fi
+SERVER_PID=$!
+
+# Wait for server to be ready
+sleep 1
+
+# Open browser
+open "http://localhost:8765" 2>/dev/null || xdg-open "http://localhost:8765" 2>/dev/null
+
+echo "[mindmap] http://localhost:8765 (PID $SERVER_PID)"
