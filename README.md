@@ -85,8 +85,7 @@ AI 生成的 JSON 格式很自由，以下格式都能自动识别：
 ├── index.html          # 主应用（单文件）
 ├── server.py           # CLI 本地服务器
 ├── mindmap             # CLI 启动脚本
-├── CLAUDE.md           # Claude Code 配置
-└── *.json              # 导图数据文件
+└── CLAUDE.md           # Claude Code 配置
 ```
 
 ## 许可

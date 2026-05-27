@@ -39,10 +39,6 @@ There are no tests, no linter, and no build step.
 
 **Import normalisation** (`normalizeNode`, line 686) converts arbitrary JSON node trees into Mind Elixir format by mapping `topic/name/title/text` → `topic` and recursing into `children` arrays.
 
-## Example data
-
-`Simcenter_Amesim_ready.json` is a pre-built mind map for a "Simcenter Amesim simulation learning plan" (Chinese). It follows the `{ nodeData: {...} }` format and can be imported directly.
-
 ## CLI script
 
 Running `./mindmap <file.json>` starts a local server and opens the browser with the mind map auto-loaded. The HTML fetches `auto-load.json` on startup via the `autoImport()` function.
