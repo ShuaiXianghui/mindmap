@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-A single-page mind mapping app — one `index.html` file with embedded CSS and JS. Uses [Mind Elixir](https://mind-elixir.com/) v5.11.2 (loaded from CDN) for the mind map rendering and interaction. All data is persisted in `localStorage` (no backend/server). No build tools, no package manager — just open `index.html` in a browser.
+A single-page mind mapping app — one `index.html` file with embedded CSS and JS. Uses [Mind Elixir](https://mind-elixir.com/) v5.11.2 and html2canvas (loaded from CDN) for the mind map rendering, interaction, and PNG export. Requires internet on first load; subsequent loads benefit from browser cache. All data is persisted in `localStorage` (no backend/server). No build tools, no package manager — just open `index.html` in a browser.
 
 ## Running/viewing
 
